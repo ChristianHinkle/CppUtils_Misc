@@ -5,8 +5,6 @@
 #include <CppUtils_Misc_Export.h>
 #include <string_view>
 #include <array>
-#include <concepts>
-#include <utility>
 
 namespace CppUtils::Misc
 {

@@ -4,10 +4,9 @@
 
 #include <CppUtils_Misc_Export.h>
 #include <filesystem>
-#include <CppUtils_Misc/String.h>
 #include <string_view>
+#include <CppUtils_Misc/String.h>
 #include <CppUtils_Misc/CharBufferString.h>
-#include <algorithm>
 
 /**
  * @brief Filesystem utilities to extend the default std::filesystem tools.
