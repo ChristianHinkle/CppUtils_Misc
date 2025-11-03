@@ -1,0 +1,74 @@
+{
+    "version": 10,
+    "cmakeMinimumRequired": {
+        "major": 4,
+        "minor": 0,
+        "patch": 0
+    },
+    "$comment": [
+        "Copyright (c) 2023-2025 Christian Hinkle, Brian Hinkle.",
+        "Includes: We have includes of utility files search from the `${sourceDir}` (which is the top-level project's directory), so that it's the responsibility of the top-level project to provide these files. We do this to avoid multiple includes to duplicate files. CMake throws an error if a preset is defined twice with the same name, but it does allow duplicate includes to the same file."
+    ],
+    "include": [
+        "${sourceDir}/GeneralCMakePresets/GeneralPresets.json"
+    ],
+    "testPresets": [
+        {
+            "name": "cpputils-misc-base",
+            "hidden": true,
+            "filter": {
+                "include": {
+                    "name": "CppUtils.Misc."
+                }
+            }
+        },
+        {
+            "name": "cpputils-misc-win-debug",
+            "displayName": "CppUtils.Misc - Windows Debug",
+            "inherits": [
+                "cpputils-misc-base",
+                "win-debug"
+            ]
+        },
+        {
+            "name": "cpputils-misc-win-release",
+            "displayName": "CppUtils.Misc - Windows Release",
+            "inherits": [
+                "cpputils-misc-base",
+                "win-release"
+            ]
+        },
+        {
+            "name": "cpputils-misc-linux-debug",
+            "displayName": "CppUtils.Misc - Linux Debug",
+            "inherits": [
+                "cpputils-misc-base",
+                "linux-debug"
+            ]
+        },
+        {
+            "name": "cpputils-misc-linux-release",
+            "displayName": "CppUtils.Misc - Linux Release",
+            "inherits": [
+                "cpputils-misc-base",
+                "linux-release"
+            ]
+        },
+        {
+            "name": "cpputils-misc-macos-debug",
+            "displayName": "CppUtils.Misc - macOS Debug",
+            "inherits": [
+                "cpputils-misc-base",
+                "macos-debug"
+            ]
+        },
+        {
+            "name": "cpputils-misc-macos-release",
+            "displayName": "CppUtils.Misc - macOS Release",
+            "inherits": [
+                "cpputils-misc-base",
+                "macos-release"
+            ]
+        }
+    ]
+}
