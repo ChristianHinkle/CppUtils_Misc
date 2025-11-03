@@ -98,6 +98,9 @@ block(SCOPE_FOR VARIABLES)
   # List of all source files (relative to our "Source" directory).
   set(MyTargetSources
     "${MY_BASE_PROJECT_NAME_FULL}_Export.cpp"
+    "Filesystem.cpp"
+    "String.cpp"
+    "CharBufferString.cpp"
     )
 
   # Add source file paths for `BUILD_LOCAL_INTERFACE` users.
