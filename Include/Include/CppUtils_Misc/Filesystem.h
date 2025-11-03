@@ -34,7 +34,7 @@ CppUtils::Misc::CharBufferString<TChar, bufferSize, TCharTraits> CppUtils::Misc:
     return CharBufferString<TChar, bufferSize, TCharTraits>(
         [&path](CharBufferString<TChar, bufferSize, TCharTraits>& characterBuffer)
         {
-            AppendPathToCharacterBuffer<bufferSize, TChar, TCharTraits>(characterBuffer, path.native());
+            AppendPathToCharacterBuffer<bufferSize, TChar, TCharTraits>(characterBuffer, path);
         }
         );
 }
