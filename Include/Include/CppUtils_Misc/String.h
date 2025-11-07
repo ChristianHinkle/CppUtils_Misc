@@ -18,6 +18,12 @@ namespace CppUtils::Misc::String
     template <class TToChar, std::size_t bufferSize, class TFromChar, class TFromTraits>
     CharBufferString<TToChar, bufferSize> ConstructCharacterBufferFromString(const std::basic_string_view<TFromChar, TFromTraits>& fromString);
 
+    /**
+     * @brief Construct a string view from an `std::basic_string` via template argument deduction.
+     */
+    template <class TChar, class TTraits, class TAllocator>
+    std::basic_string_view<TChar, TTraits> MakeStringView(const std::basic_string<TChar, TTraits, TAllocator>& fromString);
+
     template <class TToChar, std::size_t bufferSize, class TFromChar, class TFromTraits>
     void AppendStringToCharacterBuffer(
         CharBufferString<TToChar, bufferSize>& characterBuffer,
@@ -41,6 +47,12 @@ CppUtils::Misc::CharBufferString<TToChar, bufferSize> CppUtils::Misc::String::Co
             AppendStringToCharacterBuffer(charBufferString, fromString);
         }
         );
+}
+
+template <class TChar, class TTraits, class TAllocator>
+std::basic_string_view<TChar, TTraits> CppUtils::Misc::String::MakeStringView(const std::basic_string<TChar, TTraits, TAllocator>& fromString)
+{
+    return std::basic_string_view<TChar, TTraits>(fromString);
 }
 
 template <class TToChar, std::size_t bufferSize, class TFromChar, class TFromTraits>
