@@ -101,6 +101,7 @@ block(SCOPE_FOR VARIABLES)
     "Filesystem.cpp"
     "String.cpp"
     "CharBufferString.cpp"
+    "StorageChain.cpp"
     )
 
   # Add source file paths for `BUILD_LOCAL_INTERFACE` users.
