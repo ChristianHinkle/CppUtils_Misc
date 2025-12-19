@@ -4,6 +4,7 @@
 
 #include <CppUtils_Misc_Export.h>
 #include <string_view>
+#include <string>
 #include <span>
 #include <CppUtils_Misc/CharBufferString.h>
 
