@@ -102,6 +102,7 @@ block(SCOPE_FOR VARIABLES)
     "String.cpp"
     "CharBufferString.cpp"
     "StorageChain.cpp"
+    "FunctionTraits.cpp"
     )
 
   # Add source file paths for `BUILD_LOCAL_INTERFACE` users.
