@@ -101,7 +101,8 @@ block(SCOPE_FOR VARIABLES)
     "Filesystem.cpp"
     "String.cpp"
     "CharBufferString.cpp"
-    "StorageChain.cpp"
+    "DataMixin.cpp"
+    "DataChain.cpp"
     "FunctionTraits.cpp"
     )
 

@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <CppUtils_Misc/DataMixin.h>
+
 /**
  * @brief Builds a heterogeneous storage type using variadic recursive inheritance.
  *
@@ -13,30 +15,20 @@
  * subject to standard C++ object layout rules.
  */
 
-// Single member declaration.
-namespace CppUtils::Misc
-{
-    template <class T>
-    struct Storage
-    {
-        T m_Data;
-    };
-}
-
-namespace CppUtils::Misc
+namespace CppUtils
 {
     template <class... Ts>
-    struct StorageChain;
+    struct DataChain;
 
     // Recursively declare members.
     template <class TFirst, class... TRest>
-    struct StorageChain<TFirst, TRest...>
-        : Storage<TFirst>
-        , StorageChain<TRest...>
+    struct DataChain<TFirst, TRest...>
+        : DataMixin<TFirst>
+        , DataChain<TRest...>
     {};
     
     // End of recursion.
     template <>
-    struct StorageChain<>
+    struct DataChain<>
     {};
 }

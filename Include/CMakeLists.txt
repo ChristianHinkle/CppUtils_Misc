@@ -90,7 +90,8 @@ target_sources(${MY_BASE_PROJECT_NAME_FULL}_Include
         "${CMAKE_CURRENT_SOURCE_DIR}/Include/${MY_BASE_PROJECT_NAME_FULL}/Filesystem.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/Include/${MY_BASE_PROJECT_NAME_FULL}/String.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/Include/${MY_BASE_PROJECT_NAME_FULL}/CharBufferString.h"
-        "${CMAKE_CURRENT_SOURCE_DIR}/Include/${MY_BASE_PROJECT_NAME_FULL}/StorageChain.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/Include/${MY_BASE_PROJECT_NAME_FULL}/DataMixin.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/Include/${MY_BASE_PROJECT_NAME_FULL}/DataChain.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/Include/${MY_BASE_PROJECT_NAME_FULL}/FunctionTraits.h"
   )
 
