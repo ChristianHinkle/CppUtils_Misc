@@ -103,7 +103,9 @@ block(SCOPE_FOR VARIABLES)
     "CharBufferString.cpp"
     "DataMixin.cpp"
     "DataChain.cpp"
+    "TypeTraits.cpp"
     "FunctionTraits.cpp"
+    "Concepts.cpp"
     )
 
   # Add source file paths for `BUILD_LOCAL_INTERFACE` users.
