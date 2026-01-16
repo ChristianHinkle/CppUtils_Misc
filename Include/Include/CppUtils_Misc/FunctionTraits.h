@@ -7,6 +7,11 @@
 /*
 * Function traits, used to extract information about a given function.
 * Specializations make use of inheritance to avoid dup code.
+*
+* NOTE: Non-static member functions have no type because they requires
+*       an instance (this ptr). Func ptr should be used in that case.
+*       If it's impossible to get a ptr to it (e.g. consteval), calling
+*       the function via requires expressions is a viable alternative.
 */
 namespace CppUtils
 {
