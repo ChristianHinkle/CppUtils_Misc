@@ -11,5 +11,5 @@ namespace CppUtils
     * A type which is callable (via operator()).
     */
     template <auto T>
-    concept TCallable = requires { typename FunctionTraits<decltype(T)>; };
+    concept TCallable = requires { typename FunctionPtrTraits<T>; };
 }
