@@ -95,6 +95,8 @@ target_sources(${MY_BASE_PROJECT_NAME_FULL}_Include
         "${CMAKE_CURRENT_SOURCE_DIR}/Include/${MY_BASE_PROJECT_NAME_FULL}/TypeTraits.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/Include/${MY_BASE_PROJECT_NAME_FULL}/FunctionTraits.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/Include/${MY_BASE_PROJECT_NAME_FULL}/Concepts.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/Include/${MY_BASE_PROJECT_NAME_FULL}/CommandParsing.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/Include/${MY_BASE_PROJECT_NAME_FULL}/CommandParsing.inl"
   )
 
 # Note that we do not "find package" for our parent project. We don't need to since we are built in the same
@@ -102,6 +104,17 @@ target_sources(${MY_BASE_PROJECT_NAME_FULL}_Include
 # means we'll have all their targets. Also, the targets that we reference in `target_link_libraries` commands don't
 # even need to exist yet because CMake only validates the existence of targets at the end of the entire
 # configuration process.
+
+find_package(CppUtils_StdReimpl CONFIG REQUIRED COMPONENTS Include)
+find_package(CppUtils_Core CONFIG REQUIRED COMPONENTS Include)
+
+# Add dependencies to other targets. For imported targets, it's important to only depend on them if we
+# are BUILD_LOCAL_INTERFACE, because we don't want them to get mixed into our export.
+target_link_libraries(${MY_BASE_PROJECT_NAME_FULL}_Include
+  INTERFACE
+    $<BUILD_LOCAL_INTERFACE:CppUtils::StdReimpl::Include>
+    $<BUILD_LOCAL_INTERFACE:CppUtils::Core::Include>
+  )
 
 # Associate our targets with an export and specify how their files would be installed.
 install(TARGETS ${MY_BASE_PROJECT_NAME_FULL}_Include

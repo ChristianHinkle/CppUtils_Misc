@@ -21,3 +21,15 @@ project(${MY_BASE_PROJECT_NAME_FULL}_Tests
 # means we'll have all their targets. Also, the targets that we reference in `target_link_libraries` commands don't
 # even need to exist yet because CMake only validates the existence of targets at the end of the entire
 # configuration process.
+
+add_executable(CppUtils_Misc_CommandParsing)
+target_compile_features(CppUtils_Misc_CommandParsing PUBLIC cxx_std_20)
+target_sources(CppUtils_Misc_CommandParsing PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Source/CommandParsing.cpp")
+target_link_libraries(CppUtils_Misc_CommandParsing
+  PRIVATE
+    ${MY_BASE_PROJECT_NAME_NAMESPACE}::${MY_BASE_PROJECT_NAME_LEAFNAME}::Static
+  )
+
+add_test(NAME CppUtils.Misc.CommandParsing
+  COMMAND CppUtils_Misc_CommandParsing
+  )

@@ -14,6 +14,12 @@
 namespace CppUtils::Misc::String
 {
     template <class TChar, class TTraits = std::char_traits<TChar>>
+    std::basic_string_view<TChar, TTraits> TrimLeadingWhitespace(std::basic_string_view<TChar, TTraits> sourceString);
+
+    template <class TChar, class TTraits = std::char_traits<TChar>>
+    std::basic_string_view<TChar, TTraits> TrimTrailingWhitespace(std::basic_string_view<TChar, TTraits> sourceString);
+
+    template <class TChar, class TTraits = std::char_traits<TChar>>
     std::basic_string_view<TChar, TTraits> GetStringViewFromCharacterBuffer(const std::span<TChar>& characterBuffer);
 
     template <class TToChar, std::size_t bufferSize, class TFromChar, class TFromTraits>
@@ -29,6 +35,36 @@ namespace CppUtils::Misc::String
     void AppendStringToCharacterBuffer(
         CharBufferString<TToChar, bufferSize>& characterBuffer,
         const std::basic_string_view<TFromChar, TFromTraits>& fromString);
+}
+
+#include <locale>
+
+template <class TChar, class TTraits>
+std::basic_string_view<TChar, TTraits> CppUtils::Misc::String::TrimLeadingWhitespace(std::basic_string_view<TChar, TTraits> sourceString)
+{
+    for (std::size_t pos = 0u; pos < sourceString.length(); ++pos)
+    {
+        if (!std::isspace(sourceString[pos]))
+        {
+            return sourceString.substr(pos);
+        }
+    }
+
+    return sourceString.substr(sourceString.length());
+}
+
+template <class TChar, class TTraits>
+std::basic_string_view<TChar, TTraits> CppUtils::Misc::String::TrimTrailingWhitespace(std::basic_string_view<TChar, TTraits> sourceString)
+{
+    for (std::size_t pos = sourceString.length() - 1; pos >= 0u; --pos)
+    {
+        if (!std::isspace(sourceString[pos]))
+        {
+            return sourceString.substr(pos);
+        }
+    }
+
+    return sourceString.substr(0u, 0u);
 }
 
 template <class TChar, class TTraits>
