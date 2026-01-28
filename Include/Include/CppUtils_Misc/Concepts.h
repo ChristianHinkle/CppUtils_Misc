@@ -12,4 +12,10 @@ namespace CppUtils
     */
     template <auto T>
     concept TCallable = requires { typename FunctionPtrTraits<T>; };
+
+    template <class T>
+    concept TReferenceType = std::is_reference_v<T>;
+
+    template <class T>
+    concept TNonReferenceType = !TReferenceType<T>;
 }
