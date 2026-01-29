@@ -107,6 +107,7 @@ block(SCOPE_FOR VARIABLES)
     "FunctionTraits.cpp"
     "Concepts.cpp"
     "CommandParsing.cpp"
+    "ContainerElementType.cpp"
     )
 
   # Add source file paths for `BUILD_LOCAL_INTERFACE` users.
