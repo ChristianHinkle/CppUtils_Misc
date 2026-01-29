@@ -7,8 +7,9 @@
 #include <locale>
 #include <cassert>
 #include <CppUtils_Misc/String.h>
+#include <CppUtils_Misc/Span.h>
 
-std::vector<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenize(std::string_view argsStr)
+std::vector<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenize(CppUtils::Core::StringSpan<char> argsStr)
 {
     std::vector<std::string_view> tokens;
 
@@ -23,7 +24,7 @@ std::vector<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenize(std:
 }
 
 template <CppUtils::StdReimpl::Concepts::invocable<const std::string_view&> TVisitor>
-void CppUtils::Misc::CommandParsing::ShellTokenizeVisitor(std::string_view argsStr, TVisitor&& visitor)
+void CppUtils::Misc::CommandParsing::ShellTokenizeVisitor(CppUtils::Core::StringSpan<char> argsStr, TVisitor&& visitor)
 {
     while (std::optional<std::string_view> nextToken = ShellTokenizeNext(argsStr))
     {
@@ -31,11 +32,13 @@ void CppUtils::Misc::CommandParsing::ShellTokenizeVisitor(std::string_view argsS
     }
 }
 
-std::optional<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenizeNext(std::string_view& argsStr)
+std::optional<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenizeNext(CppUtils::Core::StringSpan<char>& argsStr)
 {
-    argsStr = CppUtils::Misc::String::TrimLeadingWhitespace(argsStr);
+    std::span<char>& argsStrSpan = argsStr.GetSpan();
 
-    if (argsStr.empty())
+    argsStrSpan = CppUtils::Misc::String::TrimLeadingWhitespace(argsStrSpan);
+
+    if (argsStrSpan.empty())
     {
         return std::nullopt;
     }
@@ -45,9 +48,9 @@ std::optional<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenizeNex
     {
         std::optional<char> currentSurroundingQuote = std::nullopt;
         bool isEscapedChar = false;
-        for (pos; pos < argsStr.length(); ++pos)
+        for (; pos < argsStrSpan.size(); ++pos)
         {
-            const char ch = argsStr[pos];
+            const char ch = argsStrSpan[pos];
 
             if (isEscapedChar)
             {
@@ -56,24 +59,39 @@ std::optional<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenizeNex
                 continue;
             }
 
+            // Handle escaping symbols.
             if (ch == '\\')
             {
+                // Remove this special symbol and update pos.
+                CppUtils::Misc::Span::RemoveElement(argsStrSpan, pos, ' ');
+                --pos;
+
                 // This is an escaping symbol for the next char.
                 isEscapedChar = true;
                 continue;
             }
 
+            // Handle quote symbols.
             if (ch == '"' || ch == '\'')
             {
+                // Handle opening quotes.
                 if (!currentSurroundingQuote.has_value())
                 {
-                    // This char is an opening quote.
+                    // Remove this special symbol and update pos.
+                    CppUtils::Misc::Span::RemoveElement(argsStrSpan, pos, ' ');
+                    --pos;
+
                     currentSurroundingQuote = ch;
                     continue;
                 }
 
+                // Handle closing quotes.
                 if (ch == *currentSurroundingQuote)
                 {
+                    // Remove this special symbol and update pos.
+                    CppUtils::Misc::Span::RemoveElement(argsStrSpan, pos, ' ');
+                    --pos;
+
                     // This char is a closing quote.
                     currentSurroundingQuote.reset();
                     continue;
@@ -88,16 +106,16 @@ std::optional<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenizeNex
         }
     }
 
-    // Assert for valid indices.
+    // Assert that we have valid indices.
     assert(pos >= 0u);
-    assert(pos <= argsStr.length());
+    assert(pos <= argsStrSpan.size());
 
-    // Store the original value of the passed in string, before it can get modified.
-    const std::string_view originalArgsStr = argsStr;
+    // Store a view of the entire arg token that we found.
+    std::string_view tokenStr = argsStr.ToStringView().substr(0u, pos);
 
     // Adjust the caller's string to be viewing the next args.
-    argsStr = argsStr.substr(pos, argsStr.length() - pos);
+    argsStrSpan = argsStrSpan.subspan(pos, argsStrSpan.size() - pos);
 
-    // Return a view of the full arg that we found.
-    return originalArgsStr.substr(0u, pos);
+    // Return the arg token.
+    return tokenStr;
 }
