@@ -1,0 +1,28 @@
+// Copyright (c) 2023-2025 Christian Hinkle, Brian Hinkle.
+
+#pragma once
+
+#include <CppUtils_Misc_Export.h>
+#include <string_view>
+#include <vector>
+#include <CppUtils/StdReimpl/Concepts.h>
+#include <optional>
+#include <CppUtils/Core/StringSpan.h>
+
+/**
+ * @brief Command line parsing utilities.
+ * @todo @Christian: TODO: [todo][techdebt] Make these string view functions templated to take in any char type (and any traits type).
+ */
+namespace CppUtils
+{
+    // Warning: Returns string views of the passed in string, so the passed in string should not be a temporary.
+    std::vector<std::string_view> ShellTokenize(CppUtils::StringSpan<char> argsStr);
+
+    // Warning: Returns string views of the passed in string, so the passed in string should not be a temporary.
+    template <StdReimpl::invocable<const std::string_view&> TVisitor>
+    void ShellTokenizeVisitor(CppUtils::StringSpan<char> argsStr, TVisitor&& visitor);
+
+    std::optional<std::string_view> ShellTokenizeNext(CppUtils::StringSpan<char>& argsStr);
+}
+
+#include <CppUtils/Misc/CommandParsing.inl>

@@ -6,7 +6,7 @@
 #include <string_view>
 #include <array>
 
-namespace CppUtils::Misc
+namespace CppUtils
 {
     /**
      * @brief An in-place character buffer which can be manipulated and viewed as a string.
