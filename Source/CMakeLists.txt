@@ -108,6 +108,7 @@ block(SCOPE_FOR VARIABLES)
     "Concepts.cpp"
     "CommandParsing.cpp"
     "ContainerElementType.cpp"
+    "Static_Execute.cpp"
     )
 
   # Add source file paths for `BUILD_LOCAL_INTERFACE` users.
