@@ -1,7 +1,7 @@
 // Copyright (c) 2023-2025 Christian Hinkle, Brian Hinkle.
 
-#include <CppUtils_Misc/CommandParsing.h>
-#include <CppUtils_Misc/CharBufferString.h>
+#include <CppUtils/Misc/CommandParsing.h>
+#include <CppUtils/Misc/CharBufferString.h>
 
 int main(int argc, char** argv)
 {

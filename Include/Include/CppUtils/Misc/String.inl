@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <CppUtils_Misc/String.h>
+#include <CppUtils/Misc/String.h>
 
 #include <locale>
 

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <CppUtils_Misc/FunctionTraits.h>
+#include <CppUtils/Misc/FunctionTraits.h>
 
 
 namespace CppUtils

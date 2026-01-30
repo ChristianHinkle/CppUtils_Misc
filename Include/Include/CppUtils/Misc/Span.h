@@ -12,4 +12,4 @@ namespace CppUtils
     void RemoveElement(std::span<T, extent>& span, std::size_t index, std::remove_reference_t<T>&& replacementValue);
 }
 
-#include <CppUtils_Misc/Span.inl>
+#include <CppUtils/Misc/Span.inl>

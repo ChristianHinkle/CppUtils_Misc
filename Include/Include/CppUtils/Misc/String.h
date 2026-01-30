@@ -6,7 +6,7 @@
 #include <string_view>
 #include <string>
 #include <span>
-#include <CppUtils_Misc/CharBufferString.h>
+#include <CppUtils/Misc/CharBufferString.h>
 
 /**
  * @brief String utilities to extend the default standard library tools.
@@ -46,4 +46,4 @@ namespace CppUtils
         const std::basic_string_view<TFromChar, TFromTraits>& fromString);
 }
 
-#include <CppUtils_Misc/String.inl>
+#include <CppUtils/Misc/String.inl>

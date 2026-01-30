@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <CppUtils_Misc/DataMixin.h>
+#include <CppUtils/Misc/DataMixin.h>
 
 /**
  * @brief Builds a heterogeneous storage type using variadic recursive inheritance.

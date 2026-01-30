@@ -5,9 +5,9 @@
 #include <CppUtils_Misc_Export.h>
 #include <string_view>
 #include <vector>
-#include <CppUtils_StdReimpl/Concepts.h>
+#include <CppUtils/StdReimpl/Concepts.h>
 #include <optional>
-#include <CppUtils_Core/StringSpan.h>
+#include <CppUtils/Core/StringSpan.h>
 
 /**
  * @brief Command line parsing utilities.
@@ -25,4 +25,4 @@ namespace CppUtils
     std::optional<std::string_view> ShellTokenizeNext(CppUtils::StringSpan<char>& argsStr);
 }
 
-#include <CppUtils_Misc/CommandParsing.inl>
+#include <CppUtils/Misc/CommandParsing.inl>

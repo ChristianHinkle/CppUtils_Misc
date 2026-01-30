@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <CppUtils_Misc/Span.h>
+#include <CppUtils/Misc/Span.h>
 #include <utility>
 #include <algorithm>
 #include <ranges>

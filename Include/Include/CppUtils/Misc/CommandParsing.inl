@@ -2,12 +2,12 @@
 
 #pragma once
 
-#include <CppUtils_Misc/CommandParsing.h>
+#include <CppUtils/Misc/CommandParsing.h>
 
 #include <locale>
 #include <cassert>
-#include <CppUtils_Misc/String.h>
-#include <CppUtils_Misc/Span.h>
+#include <CppUtils/Misc/String.h>
+#include <CppUtils/Misc/Span.h>
 
 std::vector<std::string_view> CppUtils::ShellTokenize(CppUtils::StringSpan<char> argsStr)
 {
