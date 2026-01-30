@@ -13,7 +13,7 @@
  * @brief Command line parsing utilities.
  * @todo @Christian: TODO: [todo][techdebt] Make these string view functions templated to take in any char type (and any traits type).
  */
-namespace CppUtils::Misc::CommandParsing
+namespace CppUtils
 {
     // Warning: Returns string views of the passed in string, so the passed in string should not be a temporary.
     std::vector<std::string_view> ShellTokenize(CppUtils::StringSpan<char> argsStr);

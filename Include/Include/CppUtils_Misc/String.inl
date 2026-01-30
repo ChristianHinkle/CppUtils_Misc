@@ -7,19 +7,19 @@
 #include <locale>
 
 template <class TChar, class TTraits>
-std::basic_string_view<TChar, TTraits> CppUtils::Misc::String::TrimLeadingWhitespace(std::basic_string_view<TChar, TTraits> sourceString)
+std::basic_string_view<TChar, TTraits> CppUtils::TrimLeadingWhitespace(std::basic_string_view<TChar, TTraits> sourceString)
 {
     return TrimLeadingWhitespace(sourceString);
 }
 
 template <class TChar, class TTraits>
-std::basic_string_view<TChar, TTraits> CppUtils::Misc::String::TrimTrailingWhitespace(std::basic_string_view<TChar, TTraits> sourceString)
+std::basic_string_view<TChar, TTraits> CppUtils::TrimTrailingWhitespace(std::basic_string_view<TChar, TTraits> sourceString)
 {
     return TrimTrailingWhitespace(sourceString);
 }
 
 template <class TChar>
-std::span<TChar> CppUtils::Misc::String::TrimLeadingWhitespace(std::span<TChar> sourceString)
+std::span<TChar> CppUtils::TrimLeadingWhitespace(std::span<TChar> sourceString)
 {
     for (std::size_t pos = 0u; pos < sourceString.size(); ++pos)
     {
@@ -33,7 +33,7 @@ std::span<TChar> CppUtils::Misc::String::TrimLeadingWhitespace(std::span<TChar> 
 }
 
 template <class TChar>
-std::span<TChar> CppUtils::Misc::String::TrimTrailingWhitespace(std::span<TChar> sourceString)
+std::span<TChar> CppUtils::TrimTrailingWhitespace(std::span<TChar> sourceString)
 {
     for (std::size_t pos = sourceString.length() - 1; pos >= 0u; --pos)
     {
@@ -47,19 +47,19 @@ std::span<TChar> CppUtils::Misc::String::TrimTrailingWhitespace(std::span<TChar>
 }
 
 template <class TChar, class TTraits>
-std::span<const TChar> CppUtils::Misc::String::MakeSpanFromStringView(const std::basic_string_view<TChar, TTraits>& stringView)
+std::span<const TChar> CppUtils::MakeSpanFromStringView(const std::basic_string_view<TChar, TTraits>& stringView)
 {
     return std::span<const TChar>(stringView.data(), stringView.length());
 }
 
 template <class TChar, class TTraits>
-std::basic_string_view<TChar, TTraits> CppUtils::Misc::String::MakeStringViewFromSpan(const std::span<TChar>& charSpan)
+std::basic_string_view<TChar, TTraits> CppUtils::MakeStringViewFromSpan(const std::span<TChar>& charSpan)
 {
     return std::basic_string_view<TChar, TTraits>(charSpan.data(), charSpan.size());
 }
 
 template <class TToChar, std::size_t bufferSize, class TFromChar, class TFromTraits>
-CppUtils::Misc::CharBufferString<TToChar, bufferSize> CppUtils::Misc::String::ConstructCharacterBufferFromString(
+CppUtils::CharBufferString<TToChar, bufferSize> CppUtils::ConstructCharacterBufferFromString(
     const std::basic_string_view<TFromChar, TFromTraits>& fromString)
 {
     return CharBufferString<TToChar, bufferSize>(
@@ -71,13 +71,13 @@ CppUtils::Misc::CharBufferString<TToChar, bufferSize> CppUtils::Misc::String::Co
 }
 
 template <class TChar, class TTraits, class TAllocator>
-std::basic_string_view<TChar, TTraits> CppUtils::Misc::String::MakeStringView(const std::basic_string<TChar, TTraits, TAllocator>& fromString)
+std::basic_string_view<TChar, TTraits> CppUtils::MakeStringView(const std::basic_string<TChar, TTraits, TAllocator>& fromString)
 {
     return std::basic_string_view<TChar, TTraits>(fromString);
 }
 
 template <class TToChar, std::size_t bufferSize, class TFromChar, class TFromTraits>
-void CppUtils::Misc::String::AppendStringToCharacterBuffer(
+void CppUtils::AppendStringToCharacterBuffer(
     CharBufferString<TToChar, bufferSize>& characterBuffer,
     const std::basic_string_view<TFromChar, TFromTraits>& fromString)
 {

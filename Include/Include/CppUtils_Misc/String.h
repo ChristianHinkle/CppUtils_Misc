@@ -11,7 +11,7 @@
 /**
  * @brief String utilities to extend the default standard library tools.
  */
-namespace CppUtils::Misc::String
+namespace CppUtils
 {
     template <class TChar, class TTraits>
     std::basic_string_view<TChar, TTraits> TrimLeadingWhitespace(std::basic_string_view<TChar, TTraits> sourceString);

@@ -9,7 +9,7 @@
 #include <CppUtils_Misc/String.h>
 #include <CppUtils_Misc/Span.h>
 
-std::vector<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenize(CppUtils::StringSpan<char> argsStr)
+std::vector<std::string_view> CppUtils::ShellTokenize(CppUtils::StringSpan<char> argsStr)
 {
     std::vector<std::string_view> tokens;
 
@@ -24,7 +24,7 @@ std::vector<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenize(CppU
 }
 
 template <StdReimpl::invocable<const std::string_view&> TVisitor>
-void CppUtils::Misc::CommandParsing::ShellTokenizeVisitor(CppUtils::StringSpan<char> argsStr, TVisitor&& visitor)
+void CppUtils::ShellTokenizeVisitor(CppUtils::StringSpan<char> argsStr, TVisitor&& visitor)
 {
     while (std::optional<std::string_view> nextToken = ShellTokenizeNext(argsStr))
     {
@@ -32,11 +32,11 @@ void CppUtils::Misc::CommandParsing::ShellTokenizeVisitor(CppUtils::StringSpan<c
     }
 }
 
-std::optional<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenizeNext(CppUtils::StringSpan<char>& argsStr)
+std::optional<std::string_view> CppUtils::ShellTokenizeNext(CppUtils::StringSpan<char>& argsStr)
 {
     std::span<char>& argsStrSpan = argsStr.GetSpan();
 
-    argsStrSpan = CppUtils::Misc::String::TrimLeadingWhitespace(argsStrSpan);
+    argsStrSpan = CppUtils::TrimLeadingWhitespace(argsStrSpan);
 
     if (argsStrSpan.empty())
     {
@@ -63,7 +63,7 @@ std::optional<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenizeNex
             if (ch == '\\')
             {
                 // Remove this special symbol and update pos.
-                CppUtils::Misc::Span::RemoveElement(argsStrSpan, pos, ' ');
+                CppUtils::RemoveElement(argsStrSpan, pos, ' ');
                 --pos;
 
                 // This is an escaping symbol for the next char.
@@ -78,7 +78,7 @@ std::optional<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenizeNex
                 if (!currentSurroundingQuote.has_value())
                 {
                     // Remove this special symbol and update pos.
-                    CppUtils::Misc::Span::RemoveElement(argsStrSpan, pos, ' ');
+                    CppUtils::RemoveElement(argsStrSpan, pos, ' ');
                     --pos;
 
                     currentSurroundingQuote = ch;
@@ -89,7 +89,7 @@ std::optional<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenizeNex
                 if (ch == *currentSurroundingQuote)
                 {
                     // Remove this special symbol and update pos.
-                    CppUtils::Misc::Span::RemoveElement(argsStrSpan, pos, ' ');
+                    CppUtils::RemoveElement(argsStrSpan, pos, ' ');
                     --pos;
 
                     // This char is a closing quote.

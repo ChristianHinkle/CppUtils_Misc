@@ -9,7 +9,7 @@
 #include <cassert>
 
 template <class T, std::size_t extent>
-void CppUtils::Misc::Span::RemoveElement(std::span<T, extent>& span, std::size_t index, std::remove_reference_t<T>&& replacementValue)
+void CppUtils::RemoveElement(std::span<T, extent>& span, std::size_t index, std::remove_reference_t<T>&& replacementValue)
 {
     assert(index >= 0u);
     assert(index < span.size());

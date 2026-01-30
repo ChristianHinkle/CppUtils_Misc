@@ -6,7 +6,7 @@
 #include <span>
 #include <type_traits>
 
-namespace CppUtils::Misc::Span
+namespace CppUtils
 {
     template <class T, std::size_t extent = std::dynamic_extent>
     void RemoveElement(std::span<T, extent>& span, std::size_t index, std::remove_reference_t<T>&& replacementValue);

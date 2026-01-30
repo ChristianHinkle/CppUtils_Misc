@@ -5,7 +5,7 @@
 #include <filesystem>
 #include <string>
 
-CppUtils::Misc::Filesystem::StdPathStringView CppUtils::Misc::Filesystem::GetStringViewFromPath(const std::filesystem::path& path)
+CppUtils::StdPathStringView CppUtils::GetStringViewFromPath(const std::filesystem::path& path)
 {
     return StdPathStringView(path.native().c_str(), path.native().length());
 }

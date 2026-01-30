@@ -9,7 +9,7 @@
 /**
  * @brief Filesystem utilities to extend the default std::filesystem tools.
  */
-namespace CppUtils::Misc::Filesystem
+namespace CppUtils
 {
     using StdPathStringView = std::basic_string_view<std::filesystem::path::value_type>;
 
