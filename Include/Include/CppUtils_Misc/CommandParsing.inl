@@ -9,7 +9,7 @@
 #include <CppUtils_Misc/String.h>
 #include <CppUtils_Misc/Span.h>
 
-std::vector<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenize(CppUtils::Core::StringSpan<char> argsStr)
+std::vector<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenize(CppUtils::StringSpan<char> argsStr)
 {
     std::vector<std::string_view> tokens;
 
@@ -23,8 +23,8 @@ std::vector<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenize(CppU
     return tokens;
 }
 
-template <CppUtils::StdReimpl::Concepts::invocable<const std::string_view&> TVisitor>
-void CppUtils::Misc::CommandParsing::ShellTokenizeVisitor(CppUtils::Core::StringSpan<char> argsStr, TVisitor&& visitor)
+template <StdReimpl::invocable<const std::string_view&> TVisitor>
+void CppUtils::Misc::CommandParsing::ShellTokenizeVisitor(CppUtils::StringSpan<char> argsStr, TVisitor&& visitor)
 {
     while (std::optional<std::string_view> nextToken = ShellTokenizeNext(argsStr))
     {
@@ -32,7 +32,7 @@ void CppUtils::Misc::CommandParsing::ShellTokenizeVisitor(CppUtils::Core::String
     }
 }
 
-std::optional<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenizeNext(CppUtils::Core::StringSpan<char>& argsStr)
+std::optional<std::string_view> CppUtils::Misc::CommandParsing::ShellTokenizeNext(CppUtils::StringSpan<char>& argsStr)
 {
     std::span<char>& argsStrSpan = argsStr.GetSpan();
 

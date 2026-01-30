@@ -16,13 +16,13 @@
 namespace CppUtils::Misc::CommandParsing
 {
     // Warning: Returns string views of the passed in string, so the passed in string should not be a temporary.
-    std::vector<std::string_view> ShellTokenize(CppUtils::Core::StringSpan<char> argsStr);
+    std::vector<std::string_view> ShellTokenize(CppUtils::StringSpan<char> argsStr);
 
     // Warning: Returns string views of the passed in string, so the passed in string should not be a temporary.
-    template <CppUtils::StdReimpl::Concepts::invocable<const std::string_view&> TVisitor>
-    void ShellTokenizeVisitor(CppUtils::Core::StringSpan<char> argsStr, TVisitor&& visitor);
+    template <StdReimpl::invocable<const std::string_view&> TVisitor>
+    void ShellTokenizeVisitor(CppUtils::StringSpan<char> argsStr, TVisitor&& visitor);
 
-    std::optional<std::string_view> ShellTokenizeNext(CppUtils::Core::StringSpan<char>& argsStr);
+    std::optional<std::string_view> ShellTokenizeNext(CppUtils::StringSpan<char>& argsStr);
 }
 
 #include <CppUtils_Misc/CommandParsing.inl>
