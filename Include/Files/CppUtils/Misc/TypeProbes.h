@@ -23,9 +23,17 @@ namespace CppUtils
         operator T&();
         operator const T&() const;
         
-        // Disallow implicit conversions to T (by value) to avoid copies.
-        operator T() = delete;
-        operator const T() const = delete;
+        /*
+        * Disallow implicit conversions to T (by value) to avoid copies.
+        * 
+        * We only generate these func definition deletions if T is not a raw-array. Substitution failure on the
+        * return type completely aborts declaration of the function, allowing us to avoid the ill-formed
+        * function declaration in the case of T being a raw array type.
+        */
+        template <class U = T>
+        operator std::enable_if_t<!std::is_array_v<U>, U>() = delete;
+        template <class U = T>
+        operator std::enable_if_t<!std::is_array_v<U>, const U>() const = delete;
         
         // Disallow implicit conversions to rvalue refs, as we only want lvalue refs.
         operator T&&() = delete;

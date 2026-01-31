@@ -33,3 +33,18 @@ target_link_libraries(${MY_BASE_PROJECT_NAME_FULL}_CommandParsing
 add_test(NAME ${MY_BASE_PROJECT_NAME_NAMESPACE}.${MY_BASE_PROJECT_NAME_LEAFNAME}.CommandParsing
   COMMAND ${MY_BASE_PROJECT_NAME_FULL}_CommandParsing
   )
+
+add_library(${MY_BASE_PROJECT_NAME_FULL}_TypeProbing STATIC EXCLUDE_FROM_ALL)
+target_compile_features(${MY_BASE_PROJECT_NAME_FULL}_TypeProbing PUBLIC cxx_std_20)
+target_sources(${MY_BASE_PROJECT_NAME_FULL}_TypeProbing PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Source/TypeProbing.cpp")
+target_link_libraries(${MY_BASE_PROJECT_NAME_FULL}_TypeProbing
+  PRIVATE
+    ${MY_BASE_PROJECT_NAME_NAMESPACE}::${MY_BASE_PROJECT_NAME_LEAFNAME}::Include
+  )
+
+add_test(
+  NAME ${MY_BASE_PROJECT_NAME_NAMESPACE}.${MY_BASE_PROJECT_NAME_LEAFNAME}.TypeProbing
+  COMMAND ${CMAKE_COMMAND}
+    --build ${CMAKE_CURRENT_BINARY_DIR}
+    --target ${MY_BASE_PROJECT_NAME_FULL}_TypeProbing
+  )
