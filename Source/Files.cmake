@@ -15,4 +15,5 @@ set(FILES_CMAKE_RESULT
   "CommandParsing.cpp"
   "ContainerElementType.cpp"
   "Static_Execute.cpp"
+  "TypeProbes.cpp"
   )
