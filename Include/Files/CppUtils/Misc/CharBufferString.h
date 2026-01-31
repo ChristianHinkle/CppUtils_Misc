@@ -5,13 +5,14 @@
 #include <CppUtils_Misc_Export.h>
 #include <string_view>
 #include <array>
+#include <CppUtils/Core/Concepts.h>
 
 namespace CppUtils
 {
     /**
      * @brief An in-place character buffer which can be manipulated and viewed as a string.
      */
-    template <class TChar, std::size_t bufferSize, class TTraits = std::char_traits<TChar>>
+    template <CppUtils::CharLike TChar, std::size_t bufferSize, class TTraits = std::char_traits<TChar>>
     struct CharBufferString
     {
     public:

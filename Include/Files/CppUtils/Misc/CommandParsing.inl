@@ -9,12 +9,13 @@
 #include <CppUtils/Misc/String.h>
 #include <CppUtils/Misc/Span.h>
 
-std::vector<std::string_view> CppUtils::ShellTokenize(CppUtils::StringSpan<char> argsStr)
+template <CppUtils::CharLike TChar, class TCharTraits>
+std::vector<std::basic_string_view<TChar, TCharTraits>> CppUtils::CommandParsing<TChar, TCharTraits>::InPlaceShellTokenize(CppUtils::StringSpan<TChar, TCharTraits> mutableArgs)
 {
-    std::vector<std::string_view> tokens;
+    std::vector<std::basic_string_view<TChar, TCharTraits>> tokens;
 
-    ShellTokenizeVisitor(argsStr,
-        [&tokens](const std::string_view& token)
+    InPlaceShellTokenizeVisitor(mutableArgs,
+        [&tokens](const std::basic_string_view<TChar, TCharTraits>& token)
         {
             tokens.push_back(token);
         }
@@ -23,22 +24,24 @@ std::vector<std::string_view> CppUtils::ShellTokenize(CppUtils::StringSpan<char>
     return tokens;
 }
 
-template <StdReimpl::invocable<const std::string_view&> TVisitor>
-void CppUtils::ShellTokenizeVisitor(CppUtils::StringSpan<char> argsStr, TVisitor&& visitor)
+template <CppUtils::CharLike TChar, class TCharTraits>
+template <StdReimpl::invocable<const std::basic_string_view<TChar, TCharTraits>&> TVisitor>
+void CppUtils::CommandParsing<TChar, TCharTraits>::InPlaceShellTokenizeVisitor(CppUtils::StringSpan<TChar, TCharTraits> mutableArgs, TVisitor&& visitor)
 {
-    while (std::optional<std::string_view> nextToken = ShellTokenizeNext(argsStr))
+    while (std::optional nextToken = InPlaceShellTokenizeNext(mutableArgs))
     {
         visitor(*nextToken);
     }
 }
 
-std::optional<std::string_view> CppUtils::ShellTokenizeNext(CppUtils::StringSpan<char>& argsStr)
+template <CppUtils::CharLike TChar, class TCharTraits>
+std::optional<std::basic_string_view<TChar, TCharTraits>> CppUtils::CommandParsing<TChar, TCharTraits>::InPlaceShellTokenizeNext(CppUtils::StringSpan<TChar, TCharTraits>& mutableArgs)
 {
-    std::span<char>& argsStrSpan = argsStr.GetSpan();
+    std::span<TChar>& mutableArgsSpan = mutableArgs.GetSpan();
 
-    argsStrSpan = CppUtils::TrimLeadingWhitespace(argsStrSpan);
+    mutableArgsSpan = CppUtils::TrimLeadingWhitespace(mutableArgsSpan);
 
-    if (argsStrSpan.empty())
+    if (mutableArgsSpan.empty())
     {
         return std::nullopt;
     }
@@ -46,11 +49,11 @@ std::optional<std::string_view> CppUtils::ShellTokenizeNext(CppUtils::StringSpan
     std::size_t pos = 0u;
 
     {
-        std::optional<char> currentSurroundingQuote = std::nullopt;
+        std::optional<TChar> currentSurroundingQuote = std::nullopt;
         bool isEscapedChar = false;
-        for (; pos < argsStrSpan.size(); ++pos)
+        for (; pos < mutableArgsSpan.size(); ++pos)
         {
-            const char ch = argsStrSpan[pos];
+            const TChar ch = mutableArgsSpan[pos];
 
             if (isEscapedChar)
             {
@@ -63,7 +66,7 @@ std::optional<std::string_view> CppUtils::ShellTokenizeNext(CppUtils::StringSpan
             if (ch == '\\')
             {
                 // Remove this special symbol and update pos.
-                CppUtils::RemoveElement(argsStrSpan, pos, ' ');
+                CppUtils::RemoveElement(mutableArgsSpan, pos, ' ');
                 --pos;
 
                 // This is an escaping symbol for the next char.
@@ -78,7 +81,7 @@ std::optional<std::string_view> CppUtils::ShellTokenizeNext(CppUtils::StringSpan
                 if (!currentSurroundingQuote.has_value())
                 {
                     // Remove this special symbol and update pos.
-                    CppUtils::RemoveElement(argsStrSpan, pos, ' ');
+                    CppUtils::RemoveElement(mutableArgsSpan, pos, ' ');
                     --pos;
 
                     currentSurroundingQuote = ch;
@@ -89,7 +92,7 @@ std::optional<std::string_view> CppUtils::ShellTokenizeNext(CppUtils::StringSpan
                 if (ch == *currentSurroundingQuote)
                 {
                     // Remove this special symbol and update pos.
-                    CppUtils::RemoveElement(argsStrSpan, pos, ' ');
+                    CppUtils::RemoveElement(mutableArgsSpan, pos, ' ');
                     --pos;
 
                     // This char is a closing quote.
@@ -108,13 +111,13 @@ std::optional<std::string_view> CppUtils::ShellTokenizeNext(CppUtils::StringSpan
 
     // Assert that we have valid indices.
     assert(pos >= 0u);
-    assert(pos <= argsStrSpan.size());
+    assert(pos <= mutableArgsSpan.size());
 
     // Store a view of the entire arg token that we found.
-    std::string_view tokenStr = argsStr.ToStringView().substr(0u, pos);
+    std::basic_string_view tokenStr = mutableArgs.ToStringView().substr(0u, pos);
 
     // Adjust the caller's string to be viewing the next args.
-    argsStrSpan = argsStrSpan.subspan(pos, argsStrSpan.size() - pos);
+    mutableArgsSpan = mutableArgsSpan.subspan(pos, mutableArgsSpan.size() - pos);
 
     // Return the arg token.
     return tokenStr;

@@ -8,21 +8,35 @@
 #include <CppUtils/StdReimpl/Concepts.h>
 #include <optional>
 #include <CppUtils/Core/StringSpan.h>
+#include <CppUtils/Core/Concepts.h>
+#include <string>
 
 /**
  * @brief Command line parsing utilities.
- * @todo @Christian: TODO: [todo][techdebt] Make these string view functions templated to take in any char type (and any traits type).
  */
 namespace CppUtils
 {
-    // Warning: Returns string views of the passed in string, so the passed in string should not be a temporary.
-    std::vector<std::string_view> ShellTokenize(CppUtils::StringSpan<char> argsStr);
+    template <CppUtils::CharLike TChar, class TCharTraits = std::char_traits<TChar>>
+    struct CommandParsing
+    {
+        using CharType = TChar;
+        using CharTraitsType = TCharTraits;
 
-    // Warning: Returns string views of the passed in string, so the passed in string should not be a temporary.
-    template <StdReimpl::invocable<const std::string_view&> TVisitor>
-    void ShellTokenizeVisitor(CppUtils::StringSpan<char> argsStr, TVisitor&& visitor);
+        /**
+         * @note Returns views to the passed in string, so it should not be a temporary lifetime string! Keep the
+         *       original string alive as storage for the returned string views.
+         */
+        static std::vector<std::basic_string_view<TChar, TCharTraits>> InPlaceShellTokenize(CppUtils::StringSpan<TChar, TCharTraits> mutableArgs);
 
-    std::optional<std::string_view> ShellTokenizeNext(CppUtils::StringSpan<char>& argsStr);
+        /**
+         * @note Returns views to the passed in string, so it should not be a temporary lifetime string! Keep the
+         *       original string alive as storage for the returned string views.
+         */
+        template <StdReimpl::invocable<const std::basic_string_view<TChar, TCharTraits>&> TVisitor>
+        static void InPlaceShellTokenizeVisitor(CppUtils::StringSpan<TChar, TCharTraits> mutableArgs, TVisitor&& visitor);
+
+        static std::optional<std::basic_string_view<TChar, TCharTraits>> InPlaceShellTokenizeNext(CppUtils::StringSpan<TChar, TCharTraits>& mutableArgs);
+    };
 }
 
 #include <CppUtils/Misc/CommandParsing.inl>
