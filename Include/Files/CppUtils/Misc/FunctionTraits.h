@@ -42,8 +42,12 @@ namespace CppUtils
 
         using ClassType = void; // No class type for free functions.
 
+        // BEGIN: Helpers for convenience
+        // @Christian TODO: [todo][metaprogramming] Try to make a nicer version of this that doesn't require users of it to
+        // use the `template` keyword.
+        template <std::size_t index>
+        using ArgAt = std::tuple_element_t<index, ArgsTuple>;
 
-        // BEGIN: Helpers for convenience        
         static consteval std::size_t GetArgsCount() { return std::tuple_size_v<ArgsTuple>; }
         // END: Helpers for convenience
     };
