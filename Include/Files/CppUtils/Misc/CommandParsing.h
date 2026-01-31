@@ -22,14 +22,20 @@ namespace CppUtils
         using CharType = TChar;
         using CharTraitsType = TCharTraits;
 
-        // Warning: Returns string views of the passed in string, so the passed in string should not be a temporary.
-        static std::vector<std::basic_string_view<TChar, TCharTraits>> ShellTokenize(CppUtils::StringSpan<TChar, TCharTraits> argsStr);
+        /**
+         * @note Returns views to the passed in string, so it should not be a temporary lifetime string! Keep the
+         *       original string alive as storage for the returned string views.
+         */
+        static std::vector<std::basic_string_view<TChar, TCharTraits>> InPlaceShellTokenize(CppUtils::StringSpan<TChar, TCharTraits> mutableArgs);
 
-        // Warning: Returns string views of the passed in string, so the passed in string should not be a temporary.
+        /**
+         * @note Returns views to the passed in string, so it should not be a temporary lifetime string! Keep the
+         *       original string alive as storage for the returned string views.
+         */
         template <StdReimpl::invocable<const std::basic_string_view<TChar, TCharTraits>&> TVisitor>
-        static void ShellTokenizeVisitor(CppUtils::StringSpan<TChar, TCharTraits> argsStr, TVisitor&& visitor);
+        static void InPlaceShellTokenizeVisitor(CppUtils::StringSpan<TChar, TCharTraits> mutableArgs, TVisitor&& visitor);
 
-        static std::optional<std::basic_string_view<TChar, TCharTraits>> ShellTokenizeNext(CppUtils::StringSpan<TChar, TCharTraits>& argsStr);
+        static std::optional<std::basic_string_view<TChar, TCharTraits>> InPlaceShellTokenizeNext(CppUtils::StringSpan<TChar, TCharTraits>& mutableArgs);
     };
 }
 
