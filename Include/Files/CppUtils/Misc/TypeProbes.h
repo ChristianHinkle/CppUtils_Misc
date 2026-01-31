@@ -16,17 +16,7 @@ namespace CppUtils
     */
     template<CppUtils::TNonReferenceType T>
     struct TypeProbe_LValueRef
-    {
-        /*
-        * Disallow implicit conversions to T (by value) to avoid copies.
-        * 
-        * We only generate these func definition deletions if T is not a raw-array. Substitution failure on the
-        * return type completely aborts declaration of the function, allowing us to avoid the ill-formed
-        * function declaration in the case of T being a raw array type.
-        */
-        template <class U = T>
-        operator std::enable_if_t<!std::is_array_v<U>, U>() = delete;
-        
+    {        
         // Allow implicit conversions to lvalue refs.
         operator T&();
         
