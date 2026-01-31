@@ -8,45 +8,78 @@ namespace
     struct Foo {};
 
     /*
-    * By lvalue refs.
+    * By values.
     */
-    struct Allowed1
+    struct Ctor_Value
     {
-        Allowed1(Foo&);
+        Ctor_Value(Foo);
     };
-    struct Allowed2
+    struct Ctor_ConstValue
     {
-        Allowed2(const Foo&);
+        Ctor_ConstValue(const Foo);
     };
 
     /*
-    * By values.
+    * By lvalue refs.
     */
-    struct Disallowed1
+    struct Ctor_LvalueRef
     {
-        Disallowed1(Foo);
+        Ctor_LvalueRef(Foo&);
     };
-    struct Disallowed2
+    struct Ctor_ConstLvalueRef
     {
-        Disallowed2(const Foo);
+        Ctor_ConstLvalueRef(const Foo&);
     };
 
     /*
     * By rvalue refs.
     */
-    struct Disallowed3
+    struct Ctor_RvalueRef
     {
-        Disallowed3(Foo&&);
+        Ctor_RvalueRef(Foo&&);
     };
-    struct Disallowed4
+    struct Ctor_ConstRvalueRef
     {
-        Disallowed4(const Foo&&);
+        Ctor_ConstRvalueRef(const Foo&&);
     };
 
-    static_assert(std::is_constructible_v<Allowed1, CppUtils::TypeProbe_LValueRef<Foo>>,     "Expected to be accepted into `Foo&` (lvalue) ctr.");
-    static_assert(std::is_constructible_v<Allowed2, CppUtils::TypeProbe_LValueRef<Foo>>,     "Expected to be accepted into `const Foo&` (const lvalue) ctr.");
-    static_assert(!std::is_constructible_v<Disallowed1, CppUtils::TypeProbe_LValueRef<Foo>>, "Expected to be rejected from `Foo` (value) ctr.");
-    static_assert(!std::is_constructible_v<Disallowed2, CppUtils::TypeProbe_LValueRef<Foo>>, "Expected to be rejected from `const Foo` (const value) ctr.");
-    static_assert(!std::is_constructible_v<Disallowed3, CppUtils::TypeProbe_LValueRef<Foo>>, "Expected to be rejected from `Foo&&` (rvalue ref) ctr.");
-    static_assert(!std::is_constructible_v<Disallowed4, CppUtils::TypeProbe_LValueRef<Foo>>, "Expected to be rejected from `const Foo&&` (const rvalue ref) ctr.");
+    /*
+    * TypeProbe_LValueRef
+    */
+    static_assert(!std::is_constructible_v<Ctor_Value,          CppUtils::TypeProbe_LValueRef<Foo>>, "Expected to be rejected from `Foo` (value) ctr.");
+    static_assert(!std::is_constructible_v<Ctor_ConstValue,     CppUtils::TypeProbe_LValueRef<Foo>>, "Expected to be rejected from `const Foo` (const value) ctr.");
+    static_assert( std::is_constructible_v<Ctor_LvalueRef,      CppUtils::TypeProbe_LValueRef<Foo>>, "Expected to be accepted into `Foo&` (lvalue ref) ctr.");
+    static_assert( std::is_constructible_v<Ctor_ConstLvalueRef, CppUtils::TypeProbe_LValueRef<Foo>>, "Expected to be accepted into `const Foo&` (const lvalue ref) ctr.");
+    static_assert(!std::is_constructible_v<Ctor_RvalueRef,      CppUtils::TypeProbe_LValueRef<Foo>>, "Expected to be rejected from `Foo&&` (rvalue ref) ctr.");
+    static_assert(!std::is_constructible_v<Ctor_ConstRvalueRef, CppUtils::TypeProbe_LValueRef<Foo>>, "Expected to be rejected from `const Foo&&` (const rvalue ref) ctr.");
+
+    /*
+    * TypeProbe_ConstRef
+    */
+    static_assert(!std::is_constructible_v<Ctor_Value,          CppUtils::TypeProbe_ConstRef<Foo>>, "Expected to be rejected from `Foo` (value) ctr.");
+    static_assert(!std::is_constructible_v<Ctor_ConstValue,     CppUtils::TypeProbe_ConstRef<Foo>>, "Expected to be rejected from `const Foo` (const value) ctr.");
+    static_assert(!std::is_constructible_v<Ctor_LvalueRef,      CppUtils::TypeProbe_ConstRef<Foo>>, "Expected to be rejected from `Foo&` (lvalue ref) ctr.");
+    static_assert( std::is_constructible_v<Ctor_ConstLvalueRef, CppUtils::TypeProbe_ConstRef<Foo>>, "Expected to be accepted into `const Foo&` (const lvalue ref) ctr.");
+    static_assert(!std::is_constructible_v<Ctor_RvalueRef,      CppUtils::TypeProbe_ConstRef<Foo>>, "Expected to be rejected from `Foo&&` (rvalue ref) ctr.");
+    static_assert( std::is_constructible_v<Ctor_ConstRvalueRef, CppUtils::TypeProbe_ConstRef<Foo>>, "Expected to be accepted into `const Foo&&` (const rvalue ref) ctr.");
+
+    /*
+    * TypeProbe_ConstLvalRef
+    */
+    static_assert(!std::is_constructible_v<Ctor_Value,          CppUtils::TypeProbe_ConstLvalRef<Foo>>, "Expected to be rejected from `Foo` (value) ctr.");
+    static_assert(!std::is_constructible_v<Ctor_ConstValue,     CppUtils::TypeProbe_ConstLvalRef<Foo>>, "Expected to be rejected from `const Foo` (const value) ctr.");
+    static_assert(!std::is_constructible_v<Ctor_LvalueRef,      CppUtils::TypeProbe_ConstLvalRef<Foo>>, "Expected to be rejected from `Foo&` (lvalue ref) ctr.");
+    static_assert( std::is_constructible_v<Ctor_ConstLvalueRef, CppUtils::TypeProbe_ConstLvalRef<Foo>>, "Expected to be accepted into `const Foo&` (const lvalue ref) ctr.");
+    static_assert(!std::is_constructible_v<Ctor_RvalueRef,      CppUtils::TypeProbe_ConstLvalRef<Foo>>, "Expected to be rejected from `Foo&&` (rvalue ref) ctr.");
+    static_assert(!std::is_constructible_v<Ctor_ConstRvalueRef, CppUtils::TypeProbe_ConstLvalRef<Foo>>, "Expected to be rejected from `const Foo&&` (const rvalue ref) ctr.");
+
+    /*
+    * TypeProbe_ConstRvalRef
+    */
+    static_assert(!std::is_constructible_v<Ctor_Value,          CppUtils::TypeProbe_ConstRvalRef<Foo>>, "Expected to be rejected from `Foo` (value) ctr.");
+    static_assert(!std::is_constructible_v<Ctor_ConstValue,     CppUtils::TypeProbe_ConstRvalRef<Foo>>, "Expected to be rejected from `const Foo` (const value) ctr.");
+    static_assert(!std::is_constructible_v<Ctor_LvalueRef,      CppUtils::TypeProbe_ConstRvalRef<Foo>>, "Expected to be rejected from `Foo&` (lvalue ref) ctr.");
+    static_assert(!std::is_constructible_v<Ctor_ConstLvalueRef, CppUtils::TypeProbe_ConstRvalRef<Foo>>, "Expected to be rejected from `const Foo&` (const lvalue ref) ctr.");
+    static_assert(!std::is_constructible_v<Ctor_RvalueRef,      CppUtils::TypeProbe_ConstRvalRef<Foo>>, "Expected to be rejected from `Foo&&` (rvalue ref) ctr.");
+    static_assert( std::is_constructible_v<Ctor_ConstRvalueRef, CppUtils::TypeProbe_ConstRvalRef<Foo>>, "Expected to be accepted into `const Foo&&` (const rvalue ref) ctr.");
 }
