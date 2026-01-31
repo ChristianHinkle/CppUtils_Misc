@@ -8,6 +8,35 @@
 #include <ranges>
 #include <cassert>
 
+namespace CppUtils::Detail
+{
+    template <class T>
+    struct StdSpanTrait
+    {
+        // This is the primary template with value defaulted to false.
+        enum
+        {
+            value = false
+        };
+    };
+
+    template <class T, std::size_t extent>
+    struct StdSpanTrait<std::span<T, extent>>
+    {
+        // This is a partial specialization for the true case.
+        enum
+        {
+            value = true
+        };
+    };
+}
+
+template <class T>
+consteval bool CppUtils::IsStdSpan()
+{
+    return CppUtils::Detail::StdSpanTrait<T>::value;
+}
+
 template <class T, std::size_t extent>
 void CppUtils::RemoveElement(std::span<T, extent>& span, std::size_t index, std::remove_reference_t<T>&& replacementValue)
 {
