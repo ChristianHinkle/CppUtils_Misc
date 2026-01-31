@@ -15,13 +15,13 @@ namespace CppUtils
 {
     /*
     * A type that can only convert to lvalue references of T (T& or const T&).
+    * NOTE: No need to specify implicit conversions to const types, since non-const can simply convert to const.
     */
     template<CppUtils::TNonReferenceType T>
     struct TypeProbe_LValueRef
     {
         // Allow implicit conversions to lvalue refs.
         operator T&();
-        operator const T&() const;
         
         /*
         * Disallow implicit conversions to T (by value) to avoid copies.
@@ -32,11 +32,8 @@ namespace CppUtils
         */
         template <class U = T>
         operator std::enable_if_t<!std::is_array_v<U>, U>() = delete;
-        template <class U = T>
-        operator std::enable_if_t<!std::is_array_v<U>, const U>() const = delete;
         
         // Disallow implicit conversions to rvalue refs, as we only want lvalue refs.
         operator T&&() = delete;
-        operator const T&&() const = delete;
     };
 }
