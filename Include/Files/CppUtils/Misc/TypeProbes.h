@@ -34,4 +34,26 @@ namespace CppUtils
         
         operator const T&&();
     };
+
+    /*
+    * A type that can only convert to const lvalue references of T (const T&).
+    */
+    template<CppUtils::TNonReferenceType T>
+    struct TypeProbe_ConstLvalRef
+    {
+        operator T() = delete;
+
+        operator const T&();
+    };
+
+    /*
+    * A type that can only convert to const rvalue references of T (const T&&).
+    */
+    template<CppUtils::TNonReferenceType T>
+    struct TypeProbe_ConstRvalRef
+    {
+        operator T() = delete;
+        
+        operator const T&&();
+    };
 }
