@@ -9,12 +9,13 @@
 #include <CppUtils/Misc/String.h>
 #include <CppUtils/Misc/Span.h>
 
-std::vector<std::string_view> CppUtils::ShellTokenize(CppUtils::StringSpan<char> argsStr)
+template <CppUtils::CharLike TChar, class TCharTraits>
+std::vector<std::basic_string_view<TChar, TCharTraits>> CppUtils::CommandParsing<TChar, TCharTraits>::ShellTokenize(CppUtils::StringSpan<TChar, TCharTraits> argsStr)
 {
-    std::vector<std::string_view> tokens;
+    std::vector<std::basic_string_view<TChar, TCharTraits>> tokens;
 
     ShellTokenizeVisitor(argsStr,
-        [&tokens](const std::string_view& token)
+        [&tokens](const std::basic_string_view<TChar, TCharTraits>& token)
         {
             tokens.push_back(token);
         }
@@ -23,18 +24,20 @@ std::vector<std::string_view> CppUtils::ShellTokenize(CppUtils::StringSpan<char>
     return tokens;
 }
 
-template <StdReimpl::invocable<const std::string_view&> TVisitor>
-void CppUtils::ShellTokenizeVisitor(CppUtils::StringSpan<char> argsStr, TVisitor&& visitor)
+template <CppUtils::CharLike TChar, class TCharTraits>
+template <StdReimpl::invocable<const std::basic_string_view<TChar, TCharTraits>&> TVisitor>
+void CppUtils::CommandParsing<TChar, TCharTraits>::ShellTokenizeVisitor(CppUtils::StringSpan<TChar, TCharTraits> argsStr, TVisitor&& visitor)
 {
-    while (std::optional<std::string_view> nextToken = ShellTokenizeNext(argsStr))
+    while (std::optional nextToken = ShellTokenizeNext(argsStr))
     {
         visitor(*nextToken);
     }
 }
 
-std::optional<std::string_view> CppUtils::ShellTokenizeNext(CppUtils::StringSpan<char>& argsStr)
+template <CppUtils::CharLike TChar, class TCharTraits>
+std::optional<std::basic_string_view<TChar, TCharTraits>> CppUtils::CommandParsing<TChar, TCharTraits>::ShellTokenizeNext(CppUtils::StringSpan<TChar, TCharTraits>& argsStr)
 {
-    std::span<char>& argsStrSpan = argsStr.GetSpan();
+    std::span<TChar>& argsStrSpan = argsStr.GetSpan();
 
     argsStrSpan = CppUtils::TrimLeadingWhitespace(argsStrSpan);
 
@@ -46,11 +49,11 @@ std::optional<std::string_view> CppUtils::ShellTokenizeNext(CppUtils::StringSpan
     std::size_t pos = 0u;
 
     {
-        std::optional<char> currentSurroundingQuote = std::nullopt;
+        std::optional<TChar> currentSurroundingQuote = std::nullopt;
         bool isEscapedChar = false;
         for (; pos < argsStrSpan.size(); ++pos)
         {
-            const char ch = argsStrSpan[pos];
+            const TChar ch = argsStrSpan[pos];
 
             if (isEscapedChar)
             {
@@ -111,7 +114,7 @@ std::optional<std::string_view> CppUtils::ShellTokenizeNext(CppUtils::StringSpan
     assert(pos <= argsStrSpan.size());
 
     // Store a view of the entire arg token that we found.
-    std::string_view tokenStr = argsStr.ToStringView().substr(0u, pos);
+    std::basic_string_view tokenStr = argsStr.ToStringView().substr(0u, pos);
 
     // Adjust the caller's string to be viewing the next args.
     argsStrSpan = argsStrSpan.subspan(pos, argsStrSpan.size() - pos);

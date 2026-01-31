@@ -8,21 +8,29 @@
 #include <CppUtils/StdReimpl/Concepts.h>
 #include <optional>
 #include <CppUtils/Core/StringSpan.h>
+#include <CppUtils/Core/Concepts.h>
+#include <string>
 
 /**
  * @brief Command line parsing utilities.
- * @todo @Christian: TODO: [todo][techdebt] Make these string view functions templated to take in any char type (and any traits type).
  */
 namespace CppUtils
 {
-    // Warning: Returns string views of the passed in string, so the passed in string should not be a temporary.
-    std::vector<std::string_view> ShellTokenize(CppUtils::StringSpan<char> argsStr);
+    template <CppUtils::CharLike TChar, class TCharTraits = std::char_traits<TChar>>
+    struct CommandParsing
+    {
+        using CharType = TChar;
+        using CharTraitsType = TCharTraits;
 
-    // Warning: Returns string views of the passed in string, so the passed in string should not be a temporary.
-    template <StdReimpl::invocable<const std::string_view&> TVisitor>
-    void ShellTokenizeVisitor(CppUtils::StringSpan<char> argsStr, TVisitor&& visitor);
+        // Warning: Returns string views of the passed in string, so the passed in string should not be a temporary.
+        static std::vector<std::basic_string_view<TChar, TCharTraits>> ShellTokenize(CppUtils::StringSpan<TChar, TCharTraits> argsStr);
 
-    std::optional<std::string_view> ShellTokenizeNext(CppUtils::StringSpan<char>& argsStr);
+        // Warning: Returns string views of the passed in string, so the passed in string should not be a temporary.
+        template <StdReimpl::invocable<const std::basic_string_view<TChar, TCharTraits>&> TVisitor>
+        static void ShellTokenizeVisitor(CppUtils::StringSpan<TChar, TCharTraits> argsStr, TVisitor&& visitor);
+
+        static std::optional<std::basic_string_view<TChar, TCharTraits>> ShellTokenizeNext(CppUtils::StringSpan<TChar, TCharTraits>& argsStr);
+    };
 }
 
 #include <CppUtils/Misc/CommandParsing.inl>

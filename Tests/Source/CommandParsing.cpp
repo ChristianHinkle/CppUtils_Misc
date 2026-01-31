@@ -11,7 +11,7 @@ int main(int argc, char** argv)
         char testArgs[] = R"(arg1 arg2 arg3 arg4)";
 
         std::vector<std::string_view> tokens =
-            CppUtils::ShellTokenize(testArgs);
+            CppUtils::CommandParsing<char>::ShellTokenize(testArgs);
 
         ++testCode;
         if (tokens.size() != 4)
@@ -30,7 +30,7 @@ int main(int argc, char** argv)
         char testArgs[] = R"(    arg1    arg2  arg3 arg4    )";
 
         std::vector<std::string_view> tokens =
-            CppUtils::ShellTokenize(testArgs);
+            CppUtils::CommandParsing<char>::ShellTokenize(testArgs);
 
         ++testCode;
         if (tokens.size() != 4)
@@ -49,7 +49,7 @@ int main(int argc, char** argv)
         char testArgs[] = R"("arg with spaces")";
 
         std::vector<std::string_view> tokens =
-            CppUtils::ShellTokenize(testArgs);
+            CppUtils::CommandParsing<char>::ShellTokenize(testArgs);
 
         ++testCode;
         if (tokens.size() != 1)
@@ -68,7 +68,7 @@ int main(int argc, char** argv)
         char testArgs[] = R"(arg" "with" "spaces)";
 
         std::vector<std::string_view> tokens =
-            CppUtils::ShellTokenize(testArgs);
+            CppUtils::CommandParsing<char>::ShellTokenize(testArgs);
 
         ++testCode;
         if (tokens.size() != 1)
@@ -87,7 +87,7 @@ int main(int argc, char** argv)
         char testArgs[] = R"(arg\ with\ spaces)";
 
         std::vector<std::string_view> tokens =
-            CppUtils::ShellTokenize(testArgs);
+            CppUtils::CommandParsing<char>::ShellTokenize(testArgs);
 
         ++testCode;
         if (tokens.size() != 1)
@@ -106,7 +106,7 @@ int main(int argc, char** argv)
         char testArgs[] = R"(arg1 arg2 "arg 3" 'arg 4' \"arg\ 5\" \'arg\ 6\' arg7 "arg \"8\"" "arg \\\"9\\\"" arg"10")";
 
         std::vector<std::string_view> tokens =
-            CppUtils::ShellTokenize(testArgs);
+            CppUtils::CommandParsing<char>::ShellTokenize(testArgs);
 
         ++testCode;
         if (tokens.size() != 10)
