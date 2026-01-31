@@ -5,11 +5,8 @@
 #include <CppUtils/Misc/Concepts.h>
 
 /*
-* Type probes are used as a tool for probing functions signatures. Very beneficial when hitting the
+* Type probes are used as a last resort tool for probing functions signatures. Very beneficial when hitting
 * language boundary of non-addressable functions (e.g. useful in tandem with std::is_constructible).
-*
-* NOTE: It may be possible to generalize this as a single struct for any user-definable type constraint,
-*       but for now, defining multiple type probes for the constraints will do (arguably more clear too).
 */
 namespace CppUtils
 {
@@ -20,9 +17,6 @@ namespace CppUtils
     template<CppUtils::TNonReferenceType T>
     struct TypeProbe_LValueRef
     {
-        // Allow implicit conversions to lvalue refs.
-        operator T&();
-        
         /*
         * Disallow implicit conversions to T (by value) to avoid copies.
         * 
@@ -33,7 +27,21 @@ namespace CppUtils
         template <class U = T>
         operator std::enable_if_t<!std::is_array_v<U>, U>() = delete;
         
+        // Allow implicit conversions to lvalue refs.
+        operator T&();
+        
         // Disallow implicit conversions to rvalue refs, as we only want lvalue refs.
         operator T&&() = delete;
+    };
+
+    /*
+    * A type that can only convert to const references of T (const T& or const T&&).
+    */
+    template<CppUtils::TNonReferenceType T>
+    struct TypeProbe_ConstRef
+    {
+        operator const T&();
+        
+        operator const T&&();
     };
 }

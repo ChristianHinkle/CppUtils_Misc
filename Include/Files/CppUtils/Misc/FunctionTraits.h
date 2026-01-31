@@ -20,7 +20,8 @@
 *       FunctionTypeTraits). Get the traits by taking decltype of that function's
 *       return value.
 *
-* -  As a final fallback for complex cases, you may simply use a requires expressions as an alternative to function traits.
+* -  As a last resort for complex cases, you might enjoy type probing (see test cases for usage of type probes).
+*       A simple requires expressions may also be enough to get the job done but that method isn't as powerful.
 */
 namespace CppUtils
 {
