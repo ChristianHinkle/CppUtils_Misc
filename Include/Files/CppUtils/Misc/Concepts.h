@@ -12,7 +12,7 @@ namespace CppUtils
     * Convenient option over std::invocable, which requires knowlage of the call signature.
     */
     template <class T>
-    concept TCallable = !requires { typename FunctionTypeTraits<T>::Tag_IsPrimaryTemplate; };
+    concept TCallable = !std::is_base_of_v<Tag_IsPrimaryTemplate, FunctionTypeTraits<T>>;
 
     template <class T>
     concept TReferenceType = std::is_reference_v<T>;

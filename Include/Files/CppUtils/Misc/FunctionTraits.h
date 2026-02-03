@@ -3,6 +3,7 @@
 #pragma once
 
 #include <tuple>
+#include <CppUtils/Misc/Tag_IsPrimaryTemplate.h>
 
 /*
 * Function traits, used to extract information about a given function.
@@ -27,11 +28,9 @@ namespace CppUtils
 {
     // Primary template.
     template <class TFunc>
-    struct FunctionTypeTraits
+    struct FunctionTypeTraits : Tag_IsPrimaryTemplate
     {
         static_assert(sizeof(TFunc) == 0, "Provided type must be either a function or function pointer.");
-
-        struct Tag_IsPrimaryTemplate{};
     };
 
     // Free function specialization.
