@@ -10,11 +10,13 @@ namespace CppUtils
     /*
     * Returns whether or not provided argument is a type which is callable (via operator()).
     * Convenient option over std::invocable, which requires knowlage of the call signature.
+    * [todo] I want to change this to auto func param for easier usage, but it seems the behavior for return value changes.
     */
     template <auto Arg>
     consteval bool IsCallable()
     {
-        return requires { typename FunctionPtrTraits<Arg>; };
+        // Callable if it does not resolve to the primary template.
+        return !requires { typename FunctionPtrTraits<Arg>::PrimaryTemplateTag; };
     }
 
     template <class T>

@@ -30,6 +30,8 @@ namespace CppUtils
     struct FunctionTypeTraits
     {
         static_assert(sizeof(TFunc) == 0, "Provided type must be either a function or function pointer.");
+
+        struct PrimaryTemplateTag{};
     };
 
     // Free function specialization.
