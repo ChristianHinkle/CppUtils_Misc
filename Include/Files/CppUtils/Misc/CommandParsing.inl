@@ -69,7 +69,7 @@ namespace CppUtils::Detail
             using Param1st = typename CppUtils::FunctionPtrTraits<callback>::template ArgAt<0>;
 
             static_assert(CppUtils::IsStdSpan<std::remove_cvref_t<Param1st>>(), "The 1st parameter should be a span for the args.");
-            static_assert(CppUtils::CharLike<std::remove_cvref_t<Param1st>::value_type>, "The args span should be a span of chars.");
+            static_assert(CppUtils::CharLike<typename std::remove_cvref_t<Param1st>::value_type>, "The args span should be a span of chars.");
             static_assert(std::is_lvalue_reference_v<Param1st>, "The args span shoule be passed by reference.");
 
             using Param2nd = typename CppUtils::FunctionPtrTraits<callback>::template ArgAt<1>;

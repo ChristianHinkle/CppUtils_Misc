@@ -14,7 +14,7 @@ namespace CppUtils
     * A type that can only convert to lvalue references of T (T& or const T&).
     * NOTE: No need to specify implicit conversions to const types, since non-const can simply convert to const.
     */
-    template<CppUtils::TNonReferenceType T>
+    template<CppUtils::TNonCVRefType T>
     struct TypeProbe_LValueRef
     {        
         // Allow implicit conversions to lvalue refs.
@@ -27,7 +27,7 @@ namespace CppUtils
     /*
     * A type that can only convert to const references of T (const T& or const T&&).
     */
-    template<CppUtils::TNonReferenceType T>
+    template<CppUtils::TNonCVRefType T>
     struct TypeProbe_ConstRef
     {
         operator const T&();
@@ -38,7 +38,7 @@ namespace CppUtils
     /*
     * A type that can only convert to const lvalue references of T (const T&).
     */
-    template<CppUtils::TNonReferenceType T>
+    template<CppUtils::TNonCVRefType T>
     struct TypeProbe_ConstLvalRef
     {
         operator T() = delete;
@@ -49,7 +49,7 @@ namespace CppUtils
     /*
     * A type that can only convert to const rvalue references of T (const T&&).
     */
-    template<CppUtils::TNonReferenceType T>
+    template<CppUtils::TNonCVRefType T>
     struct TypeProbe_ConstRvalRef
     {
         operator T() = delete;

@@ -11,7 +11,7 @@
 namespace CppUtils
 {
     // Primary template.
-    template <TNonReferenceType TContainer>
+    template <TNonRefType TContainer>
     struct ContainerElementType
     {
         // Due to TContainer::value_type being a common std pattern, we treat this as our default behavior to covers many cases.
@@ -31,6 +31,6 @@ namespace CppUtils
 
 namespace CppUtils
 {
-    template <TNonReferenceType TContainer>
+    template <TNonRefType TContainer>
     using ContainerElementType_t = typename ContainerElementType<TContainer>::type;
 }
