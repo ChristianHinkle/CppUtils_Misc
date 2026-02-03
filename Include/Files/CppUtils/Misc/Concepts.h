@@ -8,11 +8,14 @@
 namespace CppUtils
 {
     /*
-    * A type which is callable (via operator()).
+    * Returns whether or not provided argument is a type which is callable (via operator()).
     * Convenient option over std::invocable, which requires knowlage of the call signature.
     */
-    template <auto T>
-    concept TCallable = requires { typename FunctionPtrTraits<T>; };
+    template <auto Arg>
+    consteval bool IsCallable()
+    {
+        return requires { typename FunctionPtrTraits<Arg>; };
+    }
 
     template <class T>
     concept TReferenceType = std::is_reference_v<T>;
