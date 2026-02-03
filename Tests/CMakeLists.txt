@@ -48,3 +48,18 @@ add_test(
     --build ${CMAKE_CURRENT_BINARY_DIR}
     --target ${MY_BASE_PROJECT_NAME_FULL}_TypeProbing
   )
+
+add_library(${MY_BASE_PROJECT_NAME_FULL}_StaticExecute STATIC EXCLUDE_FROM_ALL)
+target_compile_features(${MY_BASE_PROJECT_NAME_FULL}_StaticExecute PUBLIC cxx_std_20)
+target_sources(${MY_BASE_PROJECT_NAME_FULL}_StaticExecute PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Source/StaticExecute.cpp")
+target_link_libraries(${MY_BASE_PROJECT_NAME_FULL}_StaticExecute
+  PRIVATE
+    ${MY_BASE_PROJECT_NAME_NAMESPACE}::${MY_BASE_PROJECT_NAME_LEAFNAME}::Include
+  )
+
+add_test(
+  NAME ${MY_BASE_PROJECT_NAME_NAMESPACE}.${MY_BASE_PROJECT_NAME_LEAFNAME}.StaticExecute
+  COMMAND ${CMAKE_COMMAND}
+    --build ${CMAKE_CURRENT_BINARY_DIR}
+    --target ${MY_BASE_PROJECT_NAME_FULL}_StaticExecute
+  )
