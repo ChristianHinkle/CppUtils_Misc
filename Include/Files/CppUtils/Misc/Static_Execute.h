@@ -21,7 +21,7 @@
     static_assert(                                            \
         []() consteval {                                      \
             /* Isolate their code in a void-return lambda. */ \
-            []() consteval { __VA_ARGS__ }();                 \
+            []() consteval { __VA_ARGS__; }();                \
                                                               \
             /* Return a bool for the static assertion. */     \
             return true;                                      \
