@@ -6,6 +6,7 @@
 #include <string_view>
 #include <array>
 #include <CppUtils/Core/Concepts.h>
+#include <CppUtils/Core/StringSpan.h>
 
 namespace CppUtils
 {
@@ -32,13 +33,6 @@ namespace CppUtils
 
     public:
 
-        std::basic_string_view<TChar, TTraits> GetStringView()
-        {
-            return std::basic_string_view<TChar, TTraits>(CharBuffer.data(), Length);
-        }
-
-    public:
-
         std::array<TChar, bufferSize>::iterator begin()
         {
             return CharBuffer.begin();
@@ -61,8 +55,40 @@ namespace CppUtils
 
     public:
 
-        std::array<TChar, bufferSize> CharBuffer;
+        std::basic_string_view<TChar, TTraits> ToStringView() const
+        {
+            return std::basic_string_view<TChar, TTraits>(CharBuffer.data(), Length);
+        }
 
-        std::size_t Length = 0u;
+        CppUtils::StringSpan<TChar, TTraits> ToStringSpan() const
+        {
+            return CppUtils::StringSpan<TChar, TTraits>(CharBuffer.data(), Length);
+        }
+
+        const std::array<TChar, bufferSize>& GetCharBuffer() const
+        {
+            return CharBuffer;
+        }
+
+        std::array<TChar, bufferSize>& GetCharBufferMutable()
+        {
+            return CharBuffer;
+        }
+
+        std::size_t GetLength() const
+        {
+            return Length;
+        }
+
+        std::size_t& GetLengthMutable()
+        {
+            return Length;
+        }
+
+    private:
+
+        std::array<TChar, bufferSize> CharBuffer{};
+
+        std::size_t Length{0u};
     };
 }

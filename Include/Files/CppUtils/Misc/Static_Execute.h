@@ -16,14 +16,14 @@
 * NOTE: Though users only give one argument conceptually, it can potentially be parsed as multiple arguments for certain expressions.
 *       To resolve this, the macro accepts variatic arguments.
 */
-#define CPPUTILS_STATIC_EXECUTE(...)                                \
-    /* Use a static assertion to execute their code. */             \
-    static_assert(                                                  \
-        []() consteval {                                            \
-            /* Isolate their code in a void-return lambda. */       \
-            []() consteval { __VA_ARGS__ }();                       \
-                                                                    \
-            /* Return a bool for the static assertion. */           \
-            return true;                                            \
-        }()                                                         \
+#define CPPUTILS_STATIC_EXECUTE(...)                          \
+    /* Use a static assertion to execute their code. */       \
+    static_assert(                                            \
+        []() consteval {                                      \
+            /* Isolate their code in a void-return lambda. */ \
+            []() consteval { __VA_ARGS__ }();                 \
+                                                              \
+            /* Return a bool for the static assertion. */     \
+            return true;                                      \
+        }()                                                   \
     );
