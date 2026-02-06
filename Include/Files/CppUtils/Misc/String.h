@@ -15,6 +15,12 @@
 namespace CppUtils
 {
     template <CppUtils::CharLike TChar, class TTraits>
+    bool HasLeadingWhitespace(std::basic_string_view<TChar, TTraits> sourceString);
+
+    template <CppUtils::CharLike TChar, class TTraits>
+    bool HasTrailingWhitespace(std::basic_string_view<TChar, TTraits> sourceString);
+
+    template <CppUtils::CharLike TChar, class TTraits>
     std::basic_string_view<TChar, TTraits> TrimLeadingWhitespace(std::basic_string_view<TChar, TTraits> sourceString);
 
     template <CppUtils::CharLike TChar, class TTraits>
@@ -25,6 +31,18 @@ namespace CppUtils
 
     template <CppUtils::CharLike TChar>
     std::span<TChar> TrimTrailingWhitespace(std::span<TChar> sourceString);
+
+    template <CppUtils::CharLike TChar, class TTraits>
+    std::size_t GetTrimmedLeadingWhitespaceStartPos(std::basic_string_view<TChar, TTraits> sourceString);
+
+    template <CppUtils::CharLike TChar, class TTraits>
+    std::size_t GetTrimmedTrailingWhitespaceSize(std::basic_string_view<TChar, TTraits> sourceString);
+
+    template <CppUtils::CharLike TChar>
+    std::size_t GetTrimmedLeadingWhitespaceStartPos(std::span<TChar> sourceString);
+
+    template <CppUtils::CharLike TChar>
+    std::size_t GetTrimmedTrailingWhitespaceSize(std::span<TChar> sourceString);
 
     template <CppUtils::CharLike TChar, class TTraits>
     std::span<const TChar> MakeSpanFromStringView(const std::basic_string_view<TChar, TTraits>& stringView);
