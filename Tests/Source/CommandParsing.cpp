@@ -3,6 +3,8 @@
 #include <CppUtils/Misc/CommandParsing.h>
 #include <CppUtils/Misc/CharBufferString.h>
 
+#define COMPLICATED_TEST_ARGS_STRING_LITERAL R"(arg1 arg2 "arg 3" 'arg 4' \"arg\ 5\" \'arg\ 6\' arg7 "arg \"8\"" "arg \\\"9\\\"" arg"10")";
+
 int main(int argc, char** argv)
 {
     int testCode = 0;
@@ -103,7 +105,7 @@ int main(int argc, char** argv)
     }
 
     {
-        char testArgs[] = R"(arg1 arg2 "arg 3" 'arg 4' \"arg\ 5\" \'arg\ 6\' arg7 "arg \"8\"" "arg \\\"9\\\"" arg"10")";
+        char testArgs[] = COMPLICATED_TEST_ARGS_STRING_LITERAL;
 
         std::vector<std::string_view> tokens =
             CppUtils::CommandParsing<char>::InPlaceShellTokenize(testArgs);
@@ -172,6 +174,37 @@ int main(int argc, char** argv)
         if (tokens[9] != R"(arg10)")
         {
             return testCode;
+        }
+    }
+
+    {
+        char testArgs[] = COMPLICATED_TEST_ARGS_STRING_LITERAL;
+
+        std::vector<std::string> tokensFreeStoreAllocated{};
+
+        CppUtils::CommandParsing<char>::ShellTokenizeVisitor(testArgs,
+            [&tokensFreeStoreAllocated](std::string&& token)
+            {
+                tokensFreeStoreAllocated.push_back(std::move(token));
+            }
+        );
+
+        std::vector<std::string_view> tokensInPlace =
+            CppUtils::CommandParsing<char>::InPlaceShellTokenize(testArgs);
+
+        ++testCode;
+        if (tokensFreeStoreAllocated.size() != tokensInPlace.size())
+        {
+            return testCode;
+        }
+
+        for (std::size_t i = 0u; i < tokensInPlace.size(); ++i)
+        {
+            ++testCode;
+            if (tokensFreeStoreAllocated[i] != tokensInPlace[i])
+            {
+                return testCode;
+            }
         }
     }
 
