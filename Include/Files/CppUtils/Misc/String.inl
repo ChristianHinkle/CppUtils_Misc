@@ -132,3 +132,45 @@ void CppUtils::AppendStringToCharacterBuffer(
     // Finally, terminate the string with a null character.
     characterBuffer.GetCharBufferMutable()[oldLength + fromString.length()] = static_cast<TToChar>('\0');
 }
+
+template <StdReimpl::integral TInteger>
+constexpr std::size_t CppUtils::CountNumDigits(TInteger number, unsigned int base)
+{
+    std::size_t count = 0u;
+
+    {
+        TInteger testNum = number;
+
+        if constexpr (std::is_signed_v<TInteger>)
+        {
+            // @Christian: TODO: [todo][techdebt][std] Make a constexpr version of `std::abs` so we can use it here.
+            if (testNum < 0)
+            {
+                testNum = -testNum;
+            }
+        }
+
+        for (; testNum > 0; testNum /= base)
+        {
+            ++count;
+        }
+    }
+
+    return count;
+}
+
+template <StdReimpl::integral TInteger>
+consteval std::size_t CppUtils::GetIntegerStringMaxSizeDec(TInteger)
+{
+    std::size_t numDigitsOfMaxValue = CppUtils::CountNumDigitsDec(std::numeric_limits<TInteger>::max());
+
+    if constexpr (std::is_signed_v<TInteger>)
+    {
+        // In a special case of signed integers, make room for the sign as a character.
+        return numDigitsOfMaxValue + 1u;
+    }
+    else
+    {
+        return numDigitsOfMaxValue;
+    }
+}
