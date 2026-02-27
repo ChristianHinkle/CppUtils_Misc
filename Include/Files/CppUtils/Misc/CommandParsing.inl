@@ -6,7 +6,7 @@
 
 #include <locale>
 #include <cassert>
-#include <CppUtils/Misc/String.h>
+#include <CppUtils/Core/String.h>
 #include <CppUtils/Misc/Span.h>
 #include <CppUtils/Misc/FunctionTraits.h>
 #include <type_traits>
