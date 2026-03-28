@@ -4,7 +4,6 @@
 set(FILES_CMAKE_RESULT
   # List out all our source files, relative to our "Files" directory.
   "${MY_BASE_PROJECT_NAME_FULL}_Export.cpp"
-  "Filesystem.cpp"
   "String.cpp"
   "CharBufferString.cpp"
   "DataMixin.cpp"
