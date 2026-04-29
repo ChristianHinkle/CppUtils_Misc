@@ -16,4 +16,5 @@ set(FILES_CMAKE_RESULT
   "Static_Execute.cpp"
   "TypeProbes.cpp"
   "Tag_IsPrimaryTemplate.cpp"
+  "DateTime.cpp"
   )
