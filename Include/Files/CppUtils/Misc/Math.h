@@ -8,7 +8,9 @@ namespace CppUtils
 {
     /**
      * @brief A software implementation of the IEEE 754 standard's divide operation to support special
-     *        cases like NaN and inf values.
+     *        cases like NaN and inf values. The purpose of this is to support this behavior with non-floating-point types.
+     * @todo @Christian TODO: [todo] Convert this code to work with non-floating-point types. Make static interfaces and
+     *       type traits for getting special values like inf, NaN, and -0. We also need functions like copysign and stuff.
      * @todo @Christian TODO: [todo][cpp] Convert this to a constexpr function, as it is basic arithmetic. There are
      *       two options for this: either (1) make our own `constexpr` versions of the `std` functions that aren't
      *       constexpr yet, or (2) wait for C++23 which will make many of the `std` functions `constexpr`. I'm just going
